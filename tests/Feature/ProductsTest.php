@@ -117,3 +117,15 @@ test('product update validation error redirects back to form', function () {
         ->assertInvalid(['name', 'price'])
         ->assertSessionHasErrors(['name', 'price']); ; 
 });
+
+test('admin can delete a product',function(){
+    $product = Product::factory()->create();
+
+    asAdmin()
+        ->delete("/products/{$product->id}")
+        ->assertStatus(302)
+        ->assertRedirect('/products');
+
+    $this->assertModelMissing($product);
+    $this->assertDatabaseEmpty('products');
+});
