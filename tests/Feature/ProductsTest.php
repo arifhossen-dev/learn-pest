@@ -4,30 +4,28 @@ use App\Models\Product;
 use App\Models\User;
 
 use function Pest\Laravel\actingAs;
-use function Pest\Laravel\get;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+
+beforeEach(function () {
+    $this->user = User::factory()->create();
+});
  
 test('homepage contains empty table', function () {
-    $user = User::factory()->create();
-
-    actingAs($user)
+    actingAs($this->user)
         ->get('/products')
         ->assertStatus(200)
         ->assertSee(__('No products found'));
 });
  
 test('homepage contains non empty table', function () { 
-    $user = User::factory()->create();
-    
     $product = Product::create([
         'name'  => 'Product 1',
         'price' => 123,
     ]);
  
 
-    actingAs($user)
+    actingAs($this->user)
         ->get('/products')
         ->assertStatus(200)
         ->assertDontSee(__('No products found'))
@@ -37,13 +35,11 @@ test('homepage contains non empty table', function () {
 });
 
 test('paginate products tble doesnt contain 11th record',function(){
-    $user = User::factory()->create();
-
     $products = Product::factory(11)->create(); 
     $lastProduct = $products->last();
 
 
-    actingAs($user)
+    actingAs($this->user)
         ->get('/products')
         ->assertStatus(200)
         ->assertViewHas('products', function (LengthAwarePaginator $collection) use ($lastProduct) {
