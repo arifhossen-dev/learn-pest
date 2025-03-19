@@ -21,6 +21,8 @@ pest()->extend(Tests\TestCase::class)
 uses()->group('api')->in('Feature/Api'); 
 
 
+pest()->project()->github('arifhossen-dev/learn-pest');
+
 /*
 |--------------------------------------------------------------------------
 | Expectations

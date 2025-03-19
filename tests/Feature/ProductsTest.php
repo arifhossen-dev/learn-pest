@@ -122,3 +122,7 @@ test('admin can delete a product',function(){
     $this->assertModelMissing($product);
     $this->assertDatabaseEmpty('products');
 });
+
+test('create an issue from pest',function(){
+    //
+})->todo(issue:1,pr:1);
