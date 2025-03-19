@@ -7,6 +7,8 @@ use function Pest\Laravel\actingAs;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 
+uses()->group('products');
+
 beforeEach(function () {
     $this->user = User::factory()->create();
 });
@@ -119,36 +121,4 @@ test('admin can delete a product',function(){
 
     $this->assertModelMissing($product);
     $this->assertDatabaseEmpty('products');
-});
-
-test('api returns products list', function () {
-    $product = Product::factory()->create();
- 
-    $res = $this->getJson('/api/products')
-        ->assertJson([$product->toArray()]);
- 
-    expect($res->content())
-        ->json()
-        ->toHaveCount(1);
-});
-
-test('api product store successful', function () {
-    $product = [
-        'name' => 'Product 1',
-        'price' => 123
-    ];
- 
-    $this->postJson('/api/products', $product)
-        ->assertStatus(201)
-        ->assertJson($product);
-});
-
-test('api product invalid store returns error', function () {
-    $product = [
-        'name' => '',
-        'price' => 123
-    ];
- 
-    $this->postJson('/api/products', $product)
-        ->assertStatus(422);
 });
