@@ -22,6 +22,10 @@
                                 <th class="px-6 py-3 bg-gray-50 text-left"> 
                                     <span class="text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Price (EUR)</span>
                                 </th>
+                                @if (auth()->user()->is_admin) 
+                                    <th class="px-6 py-3 bg-gray-50 text-left">
+                                    </th>
+                                @endif 
                             </tr>
                             </thead>
  
@@ -36,7 +40,14 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900"> 
                                             {{ $product->price_eur }}
-                                        </td>                            
+                                        </td> 
+                                        @if (auth()->user()->is_admin) 
+                                            <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                <a href="{{ route('products.edit', $product) }}" class="...">
+                                                    Edit
+                                                </a>
+                                            </td>
+                                        @endif                            
                                     </tr>
                                 @empty
                                     <tr class="bg-white">

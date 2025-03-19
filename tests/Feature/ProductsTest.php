@@ -94,3 +94,26 @@ test('admin can create product',function(){
         ->and($lastProduct->price)
         ->toBe($product['price']);
 });
+
+test('product edit contains correct values',function(){
+    $product = Product::factory()->create();
+
+    asAdmin()
+        ->get("/products/{$product->id}/edit")
+        ->assertStatus(200)
+        ->assertSee($product->name)
+        ->assertSee($product->price)
+        ->assertViewHas('product',$product);
+});
+
+test('product update validation error redirects back to form', function () {
+    $product = Product::factory()->create();
+ 
+    asAdmin()->put('products/' . $product->id, [
+        'name' => '',
+        'price' => ''
+    ])
+        ->assertStatus(302) 
+        ->assertInvalid(['name', 'price'])
+        ->assertSessionHasErrors(['name', 'price']); ; 
+});
