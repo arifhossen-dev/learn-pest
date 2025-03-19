@@ -1,5 +1,8 @@
 <?php
 
+use Tests\TestCase;
+use App\Models\User;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -41,7 +44,13 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function asAdmin(): TestCase
 {
-    // ..
+    $user = User::factory()->create([
+        'is_admin' => true,
+    ]);
+ 
+    return test()->actingAs($user);
 }
+
+

@@ -46,3 +46,31 @@ test('paginate products tble doesnt contain 11th record',function(){
             return $collection->doesntContain($lastProduct);
         });
 });
+
+
+test('admin can see product create button',function(){
+    asAdmin()
+        ->get('/products')
+        ->assertStatus(200)
+        ->assertSee(__('Add new product'));
+});
+
+test('non admin cant see product create button',function(){
+    actingAs($this->user)
+        ->get('/products')
+        ->assertStatus(200)
+        ->assertDontSee(__('Add new product'));
+});
+
+test('admin can access product create page',function(){
+    asAdmin()
+        ->get('/products/create')
+        ->assertStatus(200);
+});
+
+test('non admin cant access product create page',function(){
+    actingAs($this->user)
+        ->get('/products/create')
+        ->assertStatus(403);
+});
+

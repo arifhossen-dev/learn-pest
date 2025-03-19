@@ -5,6 +5,11 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="overflow-hidden overflow-x-auto p-6 bg-white border-b border-gray-200">
                     <div class="min-w-full align-middle">
+                        @if (auth()->user()->is_admin) 
+                            <a href="{{ route('products.create') }}" class="...">
+                                Add new product
+                            </a>
+                        @endif
                         <table class="min-w-full divide-y divide-gray-200 border">
                             <thead>
                             <tr>
