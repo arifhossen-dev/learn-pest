@@ -74,3 +74,23 @@ test('non admin cant access product create page',function(){
         ->assertStatus(403);
 });
 
+test('admin can create product',function(){
+    $product = [
+        'name' => 'Product 1',
+        'price' => 123,
+    ];
+
+    asAdmin()
+        ->post('/products',$product)
+        ->assertStatus(302)
+        ->assertRedirect('/products');
+
+    $this->assertDatabaseHas('products',$product);
+
+    $lastProduct = Product::latest()->first();
+
+    expect($lastProduct->name)
+        ->toBe($product['name'])
+        ->and($lastProduct->price)
+        ->toBe($product['price']);
+});
